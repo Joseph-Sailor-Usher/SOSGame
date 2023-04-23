@@ -89,6 +89,24 @@ class SOSGameUI(tk.Tk):
         else:
             print(self.game.gametype.__str__())
         general_game_type_radiobutton.grid(row=self.game.board.board_size + 2, column=2, padx=5, pady=5, sticky=tk.W)
+
+    def create_player_type_widgets(self):
+        self.player_type_label = tk.Label(self.frame, text="Red Player Type: ")
+        self.player_type_label.grid(row=self.game.board.board_size + 2, column=1, sticky=tk.W)
+        self.player_type_var = tk.StringVar()
+        self.player_type_var.set(self.game.gametype.__str__())
+        simple_game_type_radiobutton = tk.Radiobutton(self.frame, text="Human", variable=self.game_type_var,
+                                                      value="Human", command=lambda: self.game.change_gametype(self.game, "Simple"))
+        simple_game_type_radiobutton.grid(row=self.game.board.board_size + 2, column=1, padx=5, pady=5, sticky=tk.W)
+        general_game_type_radiobutton = tk.Radiobutton(self.frame, text="AI", variable=self.game_type_var,
+                                                      value="AI", command=lambda: self.game.change_gametype(self.game, "General"))
+        if(self.game.gametype.__str__() == "General"):
+            general_game_type_radiobutton.select()
+        elif(self.game.gametype.__str__() == "Simple"):
+            simple_game_type_radiobutton.select()
+        else:
+            print(self.game.gametype.__str__())
+        general_game_type_radiobutton.grid(row=self.game.board.board_size + 2, column=2, padx=5, pady=5, sticky=tk.W)
     
     def create_board_size_entry(self):
         self.board_size_label = tk.Label(self.frame, text="Board Size:")

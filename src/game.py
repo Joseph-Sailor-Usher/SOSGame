@@ -1,6 +1,9 @@
 from board import Board
 from gametype_general import GametypeGeneral
 from gametype_simple import GametypeSimple
+from player_human import PlayerHuman
+from player_ai import PlayerAI
+
 
 class Game:
     def __init__(self, board_size, gametype, player1, player2):
@@ -13,6 +16,7 @@ class Game:
         self.winner = self.players[0]
         self.game_over = True
         self.current_player = self.players[0]
+        self.accepting_input = True
 
     def change_gametype(self, game, game_type_string):
         if game_type_string == "Simple":
@@ -23,6 +27,16 @@ class Game:
             print("Game type changed to General.")
         else:
             print("Invalid game type.")
+
+    def change_playertype(self, player, player_type_string):
+        if player_type_string == "Human":
+            player = PlayerHuman()
+            print("Player types changed to Human.")
+        elif player_type_string == "AI":
+            player = PlayerAI()
+            print("Player types changed to AI.")
+        else:
+            print("Invalid player type.")
 
     def start_game(self):
         self.board.clear_board()
@@ -41,6 +55,7 @@ class Game:
         else:
             self.current_player = self.players[0]
         #print("It is now player " + self.current_player.letter.__str__() + "'s turn.")
+        self.current_player.make_next_move(self)
    
     def end_game(self):
         print("Game ended.")
