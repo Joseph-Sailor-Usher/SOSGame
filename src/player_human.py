@@ -6,6 +6,7 @@ from player import Player
 '''
 class PlayerHuman(Player):
     def __init__(self, player_type, letter):
+        self.sos_game_ui = None
         self.type = player_type
         self.letter = letter
         self.score = 0
@@ -18,4 +19,4 @@ class PlayerHuman(Player):
     
     #called by game when a turn ended and this player became the current player
     def make_next_move(self, game):
-        pass
+        game.accepting_input = True

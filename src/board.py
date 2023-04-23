@@ -112,8 +112,57 @@ class Board:
                 if(self.board[row][col - 1] == Cell.S and self.board[row][col + 1] == Cell.S):
                     sos_count += 1
                     print("SOS")
-            
-
+        return sos_count
+    
+    def count_potential_soss(self, row, col, move_type):
+        sos_count = 0
+        if(move_type == Cell.S):
+            if(row < self.board_size - 2):
+                if(self.board[row + 1][col] == Cell.O and self.board[row + 2][col] == Cell.S):
+                    sos_count += 1
+                    print("SOS")
+            if(row < self.board_size - 2 and col > 1):
+                if(self.board[row + 1][col - 1] == Cell.O and self.board[row + 2][col - 2] == Cell.S):
+                    sos_count += 1
+                    print("SOS")
+            if(col > 1):
+                if(self.board[row][col - 1] == Cell.O and self.board[row][col - 2] == Cell.S):
+                    sos_count += 1
+                    print("SOS")
+            if(row > 1 and col > 1):
+                if(self.board[row - 1][col - 1] == Cell.O and self.board[row - 2][col - 2] == Cell.S):
+                    sos_count += 1
+                    print("SOS")
+            if(row > 1):
+                if(self.board[row - 1][col] == Cell.O and self.board[row - 2][col] == Cell.S):
+                    sos_count += 1
+                    print("SOS")
+            if(row > 1 and col < self.board_size - 2):
+                if(self.board[row - 1][col + 1] == Cell.O and self.board[row - 2][col + 2] == Cell.S):
+                    sos_count += 1
+                    print("SOS")
+            if(col < self.board_size - 2):
+                if(self.board[row][col + 1] == Cell.O and self.board[row][col + 2] == Cell.S):
+                    sos_count += 1
+                    print("SOS")
+            if(row < self.board_size - 2 and col < self.board_size - 2):
+                if(self.board[row + 1][col + 1] == Cell.O and self.board[row + 2][col + 2] == Cell.S):
+                    sos_count += 1
+                    print("SOS")
+        elif(move_type == Cell.O):
+            if(row > 0 and col > 0 and row < self.board_size - 1 and col < self.board_size - 1):
+                if(self.board[row - 1][col - 1] == Cell.S and self.board[row + 1][col + 1] == Cell.S):
+                    sos_count += 1
+                    print("SOS")
+                if(self.board[row - 1][col + 1] == Cell.S and self.board[row + 1][col - 1] == Cell.S):
+                    sos_count += 1
+                    print("SOS")
+                if(self.board[row - 1][col] == Cell.S and self.board[row + 1][col] == Cell.S):
+                    sos_count += 1
+                    print("SOS")
+                if(self.board[row][col - 1] == Cell.S and self.board[row][col + 1] == Cell.S):
+                    sos_count += 1
+                    print("SOS")
         return sos_count
     
     def clear_board(self):

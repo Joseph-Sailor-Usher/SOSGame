@@ -17,7 +17,7 @@ class Game:
         self.winner = self.players[0]
         self.game_over = True
         self.current_player = self.players[0]
-        self.accepting_input = True
+        self.accepting_input = False
 
     def change_gametype(self, game, game_type_string):
         if game_type_string == "Simple":
@@ -31,10 +31,10 @@ class Game:
 
     def change_player_type(self, player, player_type_string):
         if player_type_string == "Human":
-            player = PlayerHuman("Human", Cell.S)
+            self.players[player] = PlayerHuman("Human", Cell.S)
             print("Player types changed to Human.")
         elif player_type_string == "AI":
-            player = PlayerAI("AI", Cell.S)
+            self.players[player] = PlayerAI("AI", Cell.S)
             print("Player types changed to AI.")
         else:
             print("Invalid player type.")
@@ -60,6 +60,12 @@ class Game:
         else:
             self.current_player = self.players[0]
         #print("It is now player " + self.current_player.letter.__str__() + "'s turn.")
+        message = ""
+        if(self.current_player == self.players[0]):
+            message = "Red player's turn."
+        else:
+            message = "Blue player's turn."
+        print(message)
         self.current_player.make_next_move(self)
    
     def end_game(self):
@@ -67,6 +73,8 @@ class Game:
         self.game_over = True
 
     def make_move(self, game, row, col):
+        if(self.accepting_input == False):
+            return False
         return game.gametype.make_move(game, row, col)
     
     def check_win(self, row, col):
