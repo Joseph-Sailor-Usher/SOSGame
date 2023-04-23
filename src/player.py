@@ -1,26 +1,15 @@
-from abc import ABC, abstractmethod
-from cell import Cell
-
-class Player( ABC ):
-    def __init__(self):
+'''
+    Player class
+    1. stores player information
+'''
+class Player:
+    def __init__(self, player_type, letter):
+        self.type = player_type
+        self.letter = letter
         self.score = 0
-        self.moveType = Cell.Empty
-
-    def get_move_type(self):
-        return self.moveType
-
-    def set_move(self, newMoveType):
-        self.moveType = newMoveType
-
-    def getScore(self):
-        return self.score
-
-    def setScore(self, newScore):
-        self.score = newScore
-
-    @abstractmethod
-    def getNextMove(self, grid) -> tuple[int, int, str]:
-        x = 0
-        y = 0
-        Cell = Cell.EMPTY
-        return x, y, Cell
+    
+    def __str__(self) -> str:
+        return f"Player {self.type} ({self.letter.__str__()})"
+    
+    def get_cell_type(self):
+        return self.letter
