@@ -1,4 +1,5 @@
 import tkinter as tk
+from cell import Cell
 
 '''
 class SOSGameUI:
@@ -18,6 +19,8 @@ class SOSGameUI(tk.Tk):
         self.frame = tk.Frame(self)
         self.create_pregame_widgets()
         self.frame.pack(fill=tk.BOTH, expand=True)
+        self.S_radiobutton = None
+        self.O_radiobutton = None
 
     def create_pregame_widgets(self):
         self.frame.destroy()
@@ -32,6 +35,8 @@ class SOSGameUI(tk.Tk):
         self.create_board_size_entry()
         self.create_play_button()
         self.update_window_size()
+        self.create_red_player_type_widgets()
+        self.create_blue_player_type_widgets()
     
     def create_in_game_widgets(self):
         self.frame.destroy()
@@ -45,7 +50,7 @@ class SOSGameUI(tk.Tk):
         self.create_board_buttons()
         self.create_status_label()
         self.update_window_size()
-        self.create_turn_indicator_label()
+        self.create_change_player_move_type_widgets()
 
     def create_post_game_widgets(self):
         self.frame.destroy()
@@ -60,13 +65,16 @@ class SOSGameUI(tk.Tk):
         self.create_winner_label()
 
     def create_status_label(self):
-        self.status_label = tk.Label(self.frame, text="Player 1's Turn")
+        self.status_label = tk.Label(self.frame, text="Red Player's turn")
         self.status_label.grid(row=self.game.board.board_size + 2, column=0, columnspan=self.game.board.board_size, sticky="nsew")
 
     def create_winner_label(self):
         message = "Tied game."
         if self.game.winner != None:
-            message = f"Player {self.game.winner} wins!"
+            if(self.game.winner == self.game.players[0]):
+                message = "Red player wins!"
+            elif(self.game.winner == self.game.players[1]):
+                message = "Blue player wins!"
         else:
             message = "Tied game."
         self.winner_label = tk.Label(self.frame, text=message)
@@ -90,24 +98,68 @@ class SOSGameUI(tk.Tk):
             print(self.game.gametype.__str__())
         general_game_type_radiobutton.grid(row=self.game.board.board_size + 2, column=2, padx=5, pady=5, sticky=tk.W)
 
-    def create_player_type_widgets(self):
-        self.player_type_label = tk.Label(self.frame, text="Red Player Type: ")
-        self.player_type_label.grid(row=self.game.board.board_size + 2, column=1, sticky=tk.W)
-        self.player_type_var = tk.StringVar()
-        self.player_type_var.set(self.game.gametype.__str__())
-        simple_game_type_radiobutton = tk.Radiobutton(self.frame, text="Human", variable=self.game_type_var,
-                                                      value="Human", command=lambda: self.game.change_gametype(self.game, "Simple"))
-        simple_game_type_radiobutton.grid(row=self.game.board.board_size + 2, column=1, padx=5, pady=5, sticky=tk.W)
-        general_game_type_radiobutton = tk.Radiobutton(self.frame, text="AI", variable=self.game_type_var,
-                                                      value="AI", command=lambda: self.game.change_gametype(self.game, "General"))
-        if(self.game.gametype.__str__() == "General"):
-            general_game_type_radiobutton.select()
-        elif(self.game.gametype.__str__() == "Simple"):
-            simple_game_type_radiobutton.select()
+    def create_red_player_type_widgets(self):
+        self.red_player_type_label = tk.Label(self.frame, text="Red Player Type: ")
+        self.red_player_type_label.grid(row=self.game.board.board_size + 3, column=0, sticky=tk.W)
+        self.red_player_type_var = tk.StringVar()
+        self.red_player_type_var.set(self.game.players[0].__str__())
+        
+        human_player_type_radiobutton = tk.Radiobutton(self.frame, text="Human", variable=self.red_player_type_var,
+                                                      value="Human", command=lambda: self.game.change_player_type(self.game.players[0], "Human"))
+        human_player_type_radiobutton.grid(row=self.game.board.board_size + 3, column=1, padx=5, pady=5, sticky=tk.W)
+        ai_player_type_radiobutton = tk.Radiobutton(self.frame, text="AI", variable=self.red_player_type_var,
+                                                      value="AI", command=lambda: self.game.change_player_type(self.game.players[0], "AI"))
+        ai_player_type_radiobutton.grid(row=self.game.board.board_size + 3, column=2, padx=5, pady=5, sticky=tk.W)
+        
+        if(self.game.players[0].__str__() == "Human"):
+            human_player_type_radiobutton.select()
+        elif(self.game.players[0].__str__() == "AI"):
+            ai_player_type_radiobutton.select()
         else:
-            print(self.game.gametype.__str__())
-        general_game_type_radiobutton.grid(row=self.game.board.board_size + 2, column=2, padx=5, pady=5, sticky=tk.W)
-    
+            print(self.game.players[0].__str__())
+
+
+    def create_blue_player_type_widgets(self):
+        self.blue_player_type_label = tk.Label(self.frame, text="Blue Player Type: ")
+        self.blue_player_type_label.grid(row=self.game.board.board_size + 3, column=3, sticky=tk.W)
+        self.blue_player_type_var = tk.StringVar()
+        self.blue_player_type_var.set(self.game.players[1].__str__())
+        
+        blue_human_player_type_radiobutton = tk.Radiobutton(self.frame, text="Human", variable=self.blue_player_type_var,
+                                                      value="Human", command=lambda: self.game.change_player_type(self.game.players[1], "Human"))
+        blue_human_player_type_radiobutton.grid(row=self.game.board.board_size + 3, column=4, padx=5, pady=5, sticky=tk.W)
+        blue_ai_player_type_radiobutton = tk.Radiobutton(self.frame, text="AI", variable=self.blue_player_type_var,
+                                                      value="AI", command=lambda: self.game.change_player_type(self.game.players[1], "AI"))
+        blue_ai_player_type_radiobutton.grid(row=self.game.board.board_size + 3, column=5, padx=5, pady=5, sticky=tk.W)
+        
+        if(self.game.players[1].__str__() == "Human"):
+            blue_human_player_type_radiobutton.select()
+        elif(self.game.players[0].__str__() == "AI"):
+            blue_ai_player_type_radiobutton.select()
+        else:
+            print(self.game.players[0].__str__())
+
+    def create_change_player_move_type_widgets(self):
+        self.move_type_label = tk.Label(self.frame, text="Move type: ")
+        self.move_type_label.grid(row=self.game.board.board_size + 3, column=0, sticky=tk.W)
+        self.move_type_var = tk.StringVar()
+        self.move_type_var.set(self.game.players[0].get_cell_type())
+        
+        #change_player_move_type(self, player, move_type):
+        self.S_radiobutton = tk.Radiobutton(self.frame, text="S", variable=self.move_type_var,
+                                                      value=Cell.S, command=lambda: self.game.change_player_move_type(self.game.current_player, Cell.S))
+        self.S_radiobutton.grid(row=self.game.board.board_size + 3, column=1, padx=5, pady=5, sticky=tk.W)
+        self.O_radiobutton = tk.Radiobutton(self.frame, text="O", variable=self.move_type_var,
+                                                      value=Cell.O, command=lambda: self.game.change_player_move_type(self.game.current_player, Cell.O))
+        self.O_radiobutton.grid(row=self.game.board.board_size + 3, column=2, padx=5, pady=5, sticky=tk.W)
+        
+        if(self.game.current_player.get_cell_type() == Cell.S):
+            self.S_radiobutton.select()
+        elif(self.game.current_player.get_cell_type() == Cell.O):
+            self.O_radiobutton.select()
+        else:
+            print(self.game.players[0].__str__())
+
     def create_board_size_entry(self):
         self.board_size_label = tk.Label(self.frame, text="Board Size:")
         self.board_size_label.grid(row=self.game.board.board_size + 1, column=0, sticky=tk.W)
@@ -138,10 +190,6 @@ class SOSGameUI(tk.Tk):
             for col in range(self.game.board.board_size):
                 button = tk.Button(self.frame, text=self.game.board.board[row][col].__str__(), width=6, height=3, command=lambda r=row, c=col: self.button_click(r, c))
                 button.grid(row=row, column=col)
-        
-    def create_turn_indicator_label(self):
-        self.status_label = tk.Label(self.frame, text="Player S's Turn")
-        self.status_label.grid(row=self.game.board.board_size, column=0, columnspan=self.game.board.board_size)
 
     def button_click(self, row, col):
         tempHolder = self.game.get_current_player().letter.__str__()
@@ -149,11 +197,23 @@ class SOSGameUI(tk.Tk):
         if self.game.make_move(self.game, row, col):
             button = self.frame.grid_slaves(row=row, column=col)[0]
             button.config(text=tempHolder)
-            self.status_label.config(text="Player " + self.game.get_current_player().letter.__str__() + "'s Turn")
+            if(self.game.current_player == self.game.players[0]):
+                self.status_label.config(text="Red player's turn")
+            elif(self.game.current_player == self.game.players[1]):
+                self.status_label.config(text="Blue player's turn")
         else:
             print("Invalid move.")
+        #update the move type indicator relative to players
+        if(self.game.current_player.get_cell_type() == Cell.S):
+            self.S_radiobutton.select()
+        elif(self.game.current_player.get_cell_type() == Cell.O):
+            self.O_radiobutton.select()
+        else:
+            print(self.game.players[0].__str__())
+
         if self.game.game_over == True:
             self.create_post_game_widgets()
+
 
     def update_window_size(self):
         padding = 50

@@ -1,3 +1,4 @@
+from cell import Cell
 from board import Board
 from gametype_general import GametypeGeneral
 from gametype_simple import GametypeSimple
@@ -28,15 +29,18 @@ class Game:
         else:
             print("Invalid game type.")
 
-    def change_playertype(self, player, player_type_string):
+    def change_player_type(self, player, player_type_string):
         if player_type_string == "Human":
-            player = PlayerHuman()
+            player = PlayerHuman("Human", Cell.S)
             print("Player types changed to Human.")
         elif player_type_string == "AI":
-            player = PlayerAI()
+            player = PlayerAI("AI", Cell.S)
             print("Player types changed to AI.")
         else:
             print("Invalid player type.")
+
+    def change_player_move_type(self, player, move_type):
+        player.letter = move_type
 
     def start_game(self):
         self.board.clear_board()
@@ -49,6 +53,7 @@ class Game:
     def get_current_player(self):
         return self.current_player
 
+    #called by the current gametype when this is necessary
     def switch_turn(self):
         if self.current_player == self.players[0]:
             self.current_player = self.players[1]

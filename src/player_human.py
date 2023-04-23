@@ -11,7 +11,7 @@ class PlayerHuman(Player):
         self.score = 0
     
     def __str__(self) -> str:
-        return f"Player {self.type} ({self.letter.__str__()})"
+        return "Human"
     
     def get_cell_type(self):
         return self.letter
