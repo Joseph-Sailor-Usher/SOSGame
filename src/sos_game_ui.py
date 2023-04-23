@@ -46,7 +46,6 @@ class SOSGameUI(tk.Tk):
         self.create_status_label()
         self.update_window_size()
         self.create_turn_indicator_label()
-        self.create_player_type_widgets()
 
     def create_post_game_widgets(self):
         self.frame.destroy()
@@ -125,25 +124,6 @@ class SOSGameUI(tk.Tk):
     def create_turn_indicator_label(self):
         self.status_label = tk.Label(self.frame, text="Player S's Turn")
         self.status_label.grid(row=self.game.board.board_size, column=0, columnspan=self.game.board.board_size)
-
-    #create two radio buttons for selecting the player type
-    def create_player_type_widgets(self):
-        self.player_type_label = tk.Label(self.frame, text="Player Type:")
-        self.player_type_label.grid(row=self.game.board.board_size + 1, column=0, sticky=tk.W)
-        self.player_type_var = tk.StringVar()
-        self.player_type_var.set(self.game.player1.type.__str__())
-        human_player_type_radiobutton = tk.Radiobutton(self.frame, text="Human", variable=self.player_type_var,
-                                                      value="Human", command=lambda: self.game.change_player_type(self.game, "Human"))
-        human_player_type_radiobutton.grid(row=self.game.board.board_size + 1, column=1, padx=5, pady=5, sticky=tk.W)
-        computer_player_type_radiobutton = tk.Radiobutton(self.frame, text="Computer", variable=self.player_type_var,
-                                                      value="Computer", command=lambda: self.game.change_player_type(self.game, "Computer"))
-        if(self.game.player1.type.__str__() == "Computer"):
-            computer_player_type_radiobutton.select()
-        elif(self.game.player1.type.__str__() == "Human"):
-            human_player_type_radiobutton.select()
-        else:
-            print(self.game.player1.type.__str__())
-        computer_player_type_radiobutton.grid(row=self.game.board.board_size + 1, column=2, padx=5, pady=5, sticky=tk.W)
 
     def button_click(self, row, col):
         tempHolder = self.game.get_current_player().letter.__str__()
