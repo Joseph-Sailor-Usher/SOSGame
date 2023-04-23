@@ -1,7 +1,31 @@
-from game_mode import GameMode
-from game_win_state import GameWinState
+from board import Board
+from player import Player
+from cell import Cell
+from gametype import Gametype
 
-class GameModeSimple( GameMode ):
+'''
+    Game class
+    1. Stores game information
+    1.1 board: Board object
+    1.2 players: list of Player objects
+    1.3 current_player: Player object
+
+    2. Manages game phases
+    2.1 Start a new game (clears the board, sets current player to player 1)
+    2.2 Switch the turn (switches current player)
+    2.3 Make move (checks if move is valid, makes move, switches turn)
+    2.4 Check win (checks if the game has been won)
+
+    2.3 and 2.4 are to be overwritten by child classes
+'''
+
+class GametypeGeneral(Gametype):
+    def __init__(self):
+        super().__init__()
+    
+    def __str__(self) -> str:
+        return "General"
+
     def make_move(self, game, row, col):
         if game.board.make_move(row, col, game.current_player.get_cell_type()):
             game.current_player.score += game.board.count_new_soss(row, col)
@@ -21,18 +45,7 @@ class GameModeSimple( GameMode ):
         else:
             print("Invalid move. Try again.")
             return False
-    
+
     def check_win(self, game):
-        #If the board is full
-        if(game.checkBoardFull()):
-            #If the red player has more points, they win
-            if(game.players[0].getSCore() > game.players[1].getScore()):
-                return GameWinState.red_player
-            #If they have the same amount of points, it's a tie
-            elif(game.players[0].getSCore() == game.players[1].getScore()):
-                return GameWinState.tie
-            #Otherwise, the blue player has more points, so they win
-            else:
-                return GameWinState.blue_player
-        #Otherwise, no one has won yet
-        return GameWinState.none
+        if game.board.is_full():
+            game.end_game()

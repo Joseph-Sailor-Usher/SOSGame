@@ -2,8 +2,8 @@ from abc import ABC, abstractmethod
 
 class GameMode( ABC ):
     @abstractmethod
-    def makeMode(self, game):
+    def make_move(self, game):
         pass
     @abstractmethod
-    def checkWin(self, game):
+    def check_win(self, game):
         pass

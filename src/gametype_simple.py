@@ -1,7 +1,22 @@
-from game_mode import GameMode
-from game_win_state import GameWinState
+from board import Board
+from player import Player
+from cell import Cell
+from gametype import Gametype
 
-class GameModeSimple( GameMode ):
+'''
+    Game Simple class
+    1. Overrides functions from game class
+    1.1 make_move: checks if move is valid, makes move, switches turn
+    1.2 check_win: checks if the game has been won
+'''
+
+class GametypeSimple(Gametype):
+    def __init__(self):
+        super().__init__()
+    
+    def __str__(self) -> str:
+        return "Simple"
+
     def make_move(self, game, row, col):
         tempVar = True
         if game.board.make_move(row, col, game.current_player.get_cell_type()):
@@ -23,16 +38,5 @@ class GameModeSimple( GameMode ):
             game.end_game()
         return tempVar
 
-    def check_win(self, game):
-        #If no moves left, and no one scored, it's a tie
-        if(game.checkBoardFull()
-           and game.players[0].getScore() == 0
-           and game.players[1].getScore() == 0):
-            return GameWinState.tie
-        #If someone scored, they win
-        if(game.players[0].getSCore() != 0):
-            return GameWinState.red_player
-        if(game.players[1].getScore() != 0):
-            return GameWinState.blue_player
-        #Otherwise, no one has won yet
-        return GameWinState.none        
+    def check_win(self, game, row, col):
+        return game.board.count_new_soss(row, col) > 0
