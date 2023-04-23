@@ -1,12 +1,10 @@
 from abc import ABC, abstractmethod
 from cell import Cell
-from tuple import Tuple
 
 class Player( ABC ):
-    def __init__(self, player_type, moveType):
-        self.player_type = player_type
+    def __init__(self):
         self.score = 0
-        self.moveType = moveType
+        self.moveType = Cell.Empty
 
     def get_move_type(self):
         return self.moveType
@@ -21,6 +19,8 @@ class Player( ABC ):
         self.score = newScore
 
     @abstractmethod
-    def getNextMove(self, grid) -> Tuple(int, int, str):
-        #return x, y, and moveType, to be used in the game class
-        pass
+    def getNextMove(self, grid) -> tuple[int, int, str]:
+        x = 0
+        y = 0
+        Cell = Cell.EMPTY
+        return x, y, Cell

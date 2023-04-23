@@ -1,15 +1,25 @@
-from board import Board
-from player import Player
+from cell import Cell
+from player_human import PlayerHuman
+from player_ai import PlayerAI
+from game_mode_simple import GameModeSimple
+from game_mode_general import GameModeGeneral
+from SOSGameUI import SOSGameUI
 
 class Game:
-    def __init__(self, board_size, game_type, player1_type, player2_type):
-        self.board = Board(board_size)
-        self.game_type = game_type
+    def __init__(self, board_size):
+        self.board_size = board_size
+        self.board = [[Cell.Empty for i in range(board_size)] for j in range(board_size)]
+        self.game_mode = GameModeSimple()
         self.players = [
-            Player(1, player1_type, 'S'),
-            Player(2, player2_type, 'O')
+            PlayerHuman(),
+            PlayerHuman()
         ]
         self.current_player = self.players[0]
+
+    def main():
+        game = Game(3, 'simple', "human", "human")
+        app = SOSGameUI(game)
+        app.mainloop()
 
     def switch_turn(self):
         if self.current_player == self.players[0]:
@@ -20,17 +30,15 @@ class Game:
     def get_current_player(self):
         return self.current_player
     
-    def set_game_type(self, game_type):
-        if game_type == "simple" or game_type == "general":
-            self.game_type = game_type
-            print(f"Game type changed to {self.game_type}.")
+    def set_game_mode(self, game_mode):
+        if(game_mode == "simple"):
+            self.game_mode = GameModeSimple()
+        elif(game_mode == "general"):
+            self.game_mode = GameModeGeneral()
         else:
-            print("Invalid game type. Please choose 'simple' or 'general'.")
+            print("Invalid game mode. Please choose 'simple' or 'general'.")
 
     def start_new_game(self):
-        pass
-
-    def is_finished(self):
         pass
 
     def make_move(self, row, col):
@@ -40,3 +48,66 @@ class Game:
             self.switch_turn()
             return True
         return False
+    
+    def checkBoardFull(self):
+        pass
+
+    def checkSOS(self, x, y, moveType):
+        pass
+
+    if __name__ == "__main__":
+        main()
+
+
+"""
+class Game:
+    def __init__(self, board_size, gametype, player1, player2):
+        self.board = Board(board_size)
+        self.gametype = gametype
+        self.players = [
+            player1,
+            player2
+        ]
+        self.winner = self.players[0]
+        self.game_over = True
+        self.current_player = self.players[0]
+
+    def change_gametype(self, game, game_type_string):
+        if game_type_string == "Simple":
+            game.gametype = GametypeSimple()
+            print("Game type changed to Simple.")
+        elif game_type_string == "General":
+            game.gametype = GametypeGeneral()
+            print("Game type changed to General.")
+        else:
+            print("Invalid game type.")
+
+    def start_game(self):
+        self.board.clear_board()
+        self.players[0].score = 0
+        self.players[1].score = 0
+        self.current_player = self.players[0]
+        self.game_over = False
+        print("New game started.")
+    
+    def get_current_player(self):
+        return self.current_player
+
+    def switch_turn(self):
+        if self.current_player == self.players[0]:
+            self.current_player = self.players[1]
+        else:
+            self.current_player = self.players[0]
+        #print("It is now player " + self.current_player.letter.__str__() + "'s turn.")
+   
+    def end_game(self):
+        print("Game ended.")
+        self.game_over = True
+
+    def make_move(self, game, row, col):
+        return game.gametype.make_move(game, row, col)
+    
+    def check_win(self, row, col):
+        self.gametype.check_win(self.board, row, col)
+
+"""
