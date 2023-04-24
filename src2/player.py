@@ -1,4 +1,3 @@
-
 '''
     Player class
     1. stores player information

@@ -33,7 +33,7 @@ class Board:
     
     #place move on board
     def make_move(self, row, col, move):
-        print(self.board)
+        #print(self.board)
         if self.is_valid_move(row, col) and move in (Cell.S, Cell.O):
             self.board[row][col] = move
             return True
@@ -52,70 +52,7 @@ class Board:
         return True
     
     #counts the new sos's made by a move at row, col
-    def count_new_soss(self, row, col):
-        #print(str(row) + " " + str(col))
-        sos_count = 0
-        #If the move was an S, check for new S sos's
-        if(self.board[row][col] == Cell.S):
-            #down
-            if(row < self.board_size - 2):
-                if(self.board[row + 1][col] == Cell.O and self.board[row + 2][col] == Cell.S):
-                    sos_count += 1
-                    print("SOS")
-            #down left
-            if(row < self.board_size - 2 and col > 1):
-                if(self.board[row + 1][col - 1] == Cell.O and self.board[row + 2][col - 2] == Cell.S):
-                    sos_count += 1
-                    print("SOS")
-            #left
-            if(col > 1):
-                if(self.board[row][col - 1] == Cell.O and self.board[row][col - 2] == Cell.S):
-                    sos_count += 1
-                    print("SOS")
-            #up left
-            if(row > 1 and col > 1):
-                if(self.board[row - 1][col - 1] == Cell.O and self.board[row - 2][col - 2] == Cell.S):
-                    sos_count += 1
-                    print("SOS")
-            #up
-            if(row > 1):
-                if(self.board[row - 1][col] == Cell.O and self.board[row - 2][col] == Cell.S):
-                    sos_count += 1
-                    print("SOS")
-            #up right
-            if(row > 1 and col < self.board_size - 2):
-                if(self.board[row - 1][col + 1] == Cell.O and self.board[row - 2][col + 2] == Cell.S):
-                    sos_count += 1
-                    print("SOS")
-            #right
-            if(col < self.board_size - 2):
-                if(self.board[row][col + 1] == Cell.O and self.board[row][col + 2] == Cell.S):
-                    sos_count += 1
-                    print("SOS")
-            #down right
-            if(row < self.board_size - 2 and col < self.board_size - 2):
-                if(self.board[row + 1][col + 1] == Cell.O and self.board[row + 2][col + 2] == Cell.S):
-                    sos_count += 1
-                    print("SOS")
-        #If the move was an O, check for new O sos's
-        elif(self.board[row][col] == Cell.O):
-            #If in bounds
-            if(row > 0 and col > 0 and row < self.board_size - 1 and col < self.board_size - 1):
-                if(self.board[row - 1][col - 1] == Cell.S and self.board[row + 1][col + 1] == Cell.S):
-                    sos_count += 1
-                    print("SOS")
-                if(self.board[row - 1][col + 1] == Cell.S and self.board[row + 1][col - 1] == Cell.S):
-                    sos_count += 1
-                    print("SOS")
-                if(self.board[row - 1][col] == Cell.S and self.board[row + 1][col] == Cell.S):
-                    sos_count += 1
-                    print("SOS")
-                if(self.board[row][col - 1] == Cell.S and self.board[row][col + 1] == Cell.S):
-                    sos_count += 1
-                    print("SOS")
-        return sos_count
-    
-    def count_potential_soss(self, row, col, move_type):
+    def count_soss(self, row, col, move_type):
         sos_count = 0
         if(move_type == Cell.S):
             if(row < self.board_size - 2):
@@ -166,9 +103,11 @@ class Board:
                     print("SOS")
         return sos_count
     
+    #clears the board
     def clear_board(self):
         self.board = [[Cell.EMPTY for _ in range(self.board_size)] for _ in range(self.board_size)]
 
-    def update_board_size(self, size):
+    #resizes the board
+    def resize_board(self, size):
         self.board_size = size
         self.board = [[Cell.EMPTY for _ in range(size)] for _ in range(size)]

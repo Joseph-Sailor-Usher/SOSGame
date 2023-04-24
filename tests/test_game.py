@@ -163,7 +163,102 @@ class TestGame(unittest.TestCase):
         game.make_move(2, 2)
         game.make_move(3, 3)
         assert isinstance(game.board[3][3], Cell.S)
+    
+    #test case 8.1
+    def test_human_opponent_for_read_player(self):
+        game = Game(3, GametypeSimple(), Player("Human", Cell.S), Player("Human", Cell.O))
+        game.change_player_type(game, "red", "Human")
+        self.assertEqual(game.red_player.player_type, "Human")
+    
+    #test case 8.2
+    def test_ai_opponent_for_red_player(self):
+        game = Game(3, GametypeSimple(), Player("Human", Cell.S), Player("Human", Cell.O))
+        game.change_player_type(game, "red", "AI")
+        self.assertEqual(game.red_player.player_type, "AI")
+    
+    #test case 8.3
+    def test_human_opponent_for_blue_player(self):
+        game = Game(3, GametypeSimple(), Player("Human", Cell.S), Player("Human", Cell.O))
+        game.change_player_type(game, "blue", "Human")
+        self.assertEqual(game.blue_player.player_type, "Human")
+    
+    #test case 8.4
+    def test_ai_opponent_for_blue_player(self):
+        game = Game(3, GametypeSimple(), Player("Human", Cell.S), Player("Human", Cell.O))
+        game.change_player_type(game, "blue", "AI")
+        self.assertEqual(game.blue_player.player_type, "AI")
+    
+    #test case 8.6
+    def test_invalid_opponent_for_red_player(self):
+        game = Game(3, GametypeSimple(), Player("Human", Cell.S), Player("Human", Cell.O))
+        game.change_player_type(game, "red", "Invalid")
+        self.assertEqual(game.red_player.player_type, "Human")
+
+    #test case 8.5
+    def test_invalid_opponent_for_blue_player(self):
+        game = Game(3, GametypeSimple(), Player("Human", Cell.S), Player("Human", Cell.O))
+        game.change_player_type(game, "blue", "Invalid")
+        self.assertEqual(game.blue_player.player_type, "Human")
+
+    #test case 9.1
+    def test_human_player_makes_a_move_in_a_simple_game(self):
+        game = Game(3, GametypeSimple(), Player("Human", Cell.S), Player("Human", Cell.O))
+        game.make_move(0, 0)
+        assert isinstance(game.board[0][0], Cell.S)
+    
+    #test case 9.2
+    def test_ai_player_makes_a_move_in_a_simple_game(self):
+        game = Game(3, GametypeSimple(), Player("AI", Cell.S), Player("Human", Cell.O))
+        game.make_move(0, 0)
+        assert isinstance(game.board[0][0], Cell.S)
+    
+    #test case 10.1
+    def test_human_player_makes_a_move_in_a_general_game(self):
+        game = Game(3, GametypeGeneral(), Player("Human", Cell.S), Player("Human", Cell.O))
+        game.make_move(0, 0)
+        assert isinstance(game.board[0][0], Cell.S)
+    
+    #test case 10.2
+    def test_ai_player_makes_a_move_in_a_general_game(self):
+        game = Game(3, GametypeGeneral(), Player("AI", Cell.S), Player("Human", Cell.O))
+        game.make_move(0, 0)
+        assert isinstance(game.board[0][0], Cell.S)
 
     if __name__ == '__main__':
         unittest.main()
         
+    '''
+    AC 8.1 <Choose a human opponent for the red player>
+    Given the main menu is displayed and a game is not started  is started
+    When a player clicks the human button in the red player’s player type select widget
+    Then change the red player to be a human
+    AC 8.2 <Choose an ai opponent for the redplayer>
+    Given the main menu is displayed and a game is not started 
+    When a player clicks the ai button in the red player’s player type select widget
+    Then change the red player to be an ai
+    AC 8.3 <Choose a human opponent for the blue player>
+    Given the main menu is displayed and a game is not started 
+    When a player clicks the human button in the blue player’s player type select widget
+    Then change the blue player to be a human
+    AC 8.4 <Choose an ai opponent for the blue player>
+    Given the main menu is displayed and a game is not started 
+    When a player clicks the ai button in the blue player’s player type select widget
+    Then change the blue player to be an ai
+    AC 9.1 <A human makes a move in a simple game>
+    Given a simple game is underway
+    When it becomes a human player’s turn
+    Then change the input_allowed member variable on the game object and call the make move function on the player which will enable the buttons to be pressed by the player to let them make their move
+    AC 9.2 <An ai makes a move in a simple game>
+    Given a simple game is underway
+    When it becomes an ai player’s turn
+    Then call the make move function on the ai player which will return a tuple of (x, y, move_type) which we can use to make a move.
+    AC 10.1 <A human makes a move in a general game>
+    Given a general game is underway
+    When it becomes a human player’s turn
+    Then change the input_allowed member variable on the game object and call the make move function on the player which will enable the buttons to be pressed by the player to let them make their move, and if they get an sos allow them to make another move until they do not make an sos
+    AC 10.2 <A human makes a move in a general game>
+    Given a general game is underway
+    When it becomes a human player’s turn
+    Then change the input_allowed member variable on the game object and call the make move function on the player which will enable the buttons to be pressed by the player to let them make their move, and if they get an sos allow them to make another move until they do not make an sos
+
+'''

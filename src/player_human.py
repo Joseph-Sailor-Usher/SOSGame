@@ -5,9 +5,8 @@ from player import Player
     1. stores player information
 '''
 class PlayerHuman(Player):
-    def __init__(self, player_type, letter):
+    def __init__(self, letter):
         self.sos_game_ui = None
-        self.type = player_type
         self.letter = letter
         self.score = 0
     

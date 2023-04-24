@@ -27,12 +27,12 @@ class GametypeGeneral(Gametype):
         return "General"
 
     def make_move(self, game, row, col):
-        if game.board.make_move(row, col, game.current_player.get_cell_type()):
-            game.current_player.score += game.board.count_new_soss(row, col)
+        if game.board.make_move(row, col, game.players[game.current_player_index].get_cell_type()):
+            game.players[game.current_player_index].score += game.board.count_new_soss(row, col)
             if(game.board.count_new_soss(row, col) == 0):
                 game.switch_turn()   
             elif(game.board.count_new_soss(row, col) > 0 and game.game_over == False):
-                game.current_player.make_next_move(game)
+                game.players[game.current_player_index].make_next_move(game)
             self.check_win(game)
             if(game.players[0].score > game.players[1].score):
                 game.winner = game.players[0]

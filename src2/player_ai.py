@@ -22,7 +22,9 @@ class PlayerAI(Player):
 
     #called by game when a turn ended and this player became the current player
     def make_next_move(self, game):
-        if(game.game_over): return
+        print("AI turn")
+        if(game.game_over):
+            return
         #don't let humans interfere
         game.accepting_input = False
         #make your move
@@ -34,8 +36,8 @@ class PlayerAI(Player):
                 #get value of cell ->> def get_value(self, row, col): return self.board[row][col]
                 if game.board.get_value(i, j) == Cell.EMPTY:
                     #count_potential_soss(self, row, col, move_type):
-                    moves.append((game.board.count_potential_soss(i, j, Cell.S), i, j, Cell.S))
-                    moves.append((game.board.count_potential_soss(i, j, Cell.O), i, j, Cell.O))
+                    moves.append((game.board.count_soss(i, j, Cell.S), i, j, Cell.S))
+                    moves.append((game.board.count_soss(i, j, Cell.O), i, j, Cell.O))
         #sort the list of possible move by what move has the most SOS's
         moves.sort(key=lambda x: x[0], reverse=True)
         #print(moves)
@@ -53,10 +55,8 @@ class PlayerAI(Player):
         #make the best move
         random_index = random.randint(0, len(good_moves) - 1)
         #print(str(good_moves[random_index][1]) + " " +  str(good_moves[random_index][2]))
-        self.sos_game_ui.game.current_player.letter = good_moves[random_index][3]
+        self.sos_game_ui.game.players[self.sos_game_ui.game.current_player_index].letter = good_moves[random_index][3]
         #def change_button_text(self, row, col, text): 
         self.sos_game_ui.rename_board_buttons(good_moves[random_index][1], good_moves[random_index][2], good_moves[random_index][3])
-        self.game.switch_turn()
-        if self.game.game_over == True:
-            self.create_post_game_widgets()
         print("AI made a move " + str(good_moves[random_index][1]) + str(good_moves[random_index][2]) + " " + str(good_moves[random_index][3]))
+        game.gametype.make_move(game, good_moves[random_index][1], good_moves[random_index][2], good_moves[random_index][3])

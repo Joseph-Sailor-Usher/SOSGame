@@ -21,7 +21,7 @@ from cell import Cell
 
 class Gametype:
     def __str__(self) -> str:
-        pass
+        return "Undefined"
 
     def make_move(self, row, col):
         pass
