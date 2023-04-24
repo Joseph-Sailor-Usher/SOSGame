@@ -26,12 +26,14 @@ class GametypeGeneral(Gametype):
     def __str__(self) -> str:
         return "General"
 
-    def make_move(self, game, row, col):
-        if game.board.make_move(row, col, game.players[game.current_player_index].get_cell_type()):
-            game.players[game.current_player_index].score += game.board.count_new_soss(row, col)
-            if(game.board.count_new_soss(row, col) == 0):
+    def make_move(self, game, row, col, move_type):
+        result = False
+        if game.board.make_move(row, col, move_type):
+            game.players[game.current_player_index].score += game.board.count_soss(row, col, move_type)
+            if(game.board.count_soss(row, col, move_type) == 0):
                 game.switch_turn()   
-            elif(game.board.count_new_soss(row, col) > 0 and game.game_over == False):
+                game.players[game.current_player_index].make_next_move(game)
+            elif(game.board.count_soss(row, col, move_type) > 0 and game.game_over == False):
                 game.players[game.current_player_index].make_next_move(game)
             self.check_win(game)
             if(game.players[0].score > game.players[1].score):
@@ -43,11 +45,13 @@ class GametypeGeneral(Gametype):
             print("Player 1 " + str(game.players[0].score))
             print("Player 2 " + str(game.players[1].score))
             print(game.winner.__str__())
-            return True
+            result = True
         else:
             print("Invalid move. Try again.")
-            return False
+            result = False
+        if(self.check_win(game)):
+            game.players[game.current_player_index].sos_game_ui.create_post_game_widgets()
+
 
     def check_win(self, game):
-        if game.board.is_full():
-            game.end_game()
+        return game.board.is_full()

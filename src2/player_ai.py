@@ -23,7 +23,7 @@ class PlayerAI(Player):
     #called by game when a turn ended and this player became the current player
     def make_next_move(self, game):
         print("AI turn")
-        if(game.game_over):
+        if(game.game_over or game.board.is_full()):
             return
         #don't let humans interfere
         game.accepting_input = False

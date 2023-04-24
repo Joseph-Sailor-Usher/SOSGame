@@ -23,7 +23,7 @@ class Gametype:
     def __str__(self) -> str:
         return "Undefined"
 
-    def make_move(self, row, col):
+    def make_move(self, game, row, col, move_type):
         pass
    
     def check_win(self):

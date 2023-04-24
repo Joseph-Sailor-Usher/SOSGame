@@ -24,8 +24,9 @@ class GametypeSimple(Gametype):
             if self.check_win(game, row, col):
                 print("Player" + str(game.players[game.current_player_index]) + " wins!")
                 game.players[game.current_player_index].score += 1
-                game.winner = game.current_player
+                game.winner = game.players[game.current_player_index]
                 game.end_game()
+                game.players[game.current_player_index].sos_game_ui.create_post_game_widgets()
                 tempVar = True
             else:
                 game.switch_turn()

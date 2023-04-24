@@ -208,16 +208,20 @@ class SOSGameUI(tk.Tk):
                 print(button.config('text')[-1])
 
     def button_click(self, row, col):
-        if(self.game.accepting_input == False): return
+        move_successful = False
+        if(self.game.game_over == True or self.game.players[self.game.current_player_index].__str__() == "AI"):
+            print("AI player's turn")
+            return
         tempHolder = self.game.players[self.game.current_player_index].letter.__str__()
         #call make move on the game object
-        if self.game.board.make_move(row, col, self.game.players[self.game.current_player_index].get_cell_type()):
+        if self.game.gametype.make_move(self.game, row, col, self.game.players[self.game.current_player_index].letter):
             button = self.frame.grid_slaves(row=row, column=col)[0]
             button.config(text=tempHolder)
             if(self.game.current_player_index == 0):
                 self.status_label.config(text="Red player's turn")
             elif(self.game.current_player_index == 1):
                 self.status_label.config(text="Blue player's turn")
+            move_successful = True
         else:
             print("Invalid move.")
         #update the move type indicator relative to players
